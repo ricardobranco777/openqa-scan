@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+openqa_scan
+"""
 
 import argparse
 import logging
