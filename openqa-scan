@@ -91,6 +91,7 @@ def get_json(
         if method != "GET" or not isinstance(page, list):
             if "errors" in page:
                 logging.error("%s: %s", url, ",".join(page["errors"]))
+                return None
             return page
         results.extend(page)
 
