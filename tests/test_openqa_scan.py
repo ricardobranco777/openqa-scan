@@ -19,7 +19,7 @@ import requests
 
 # Load the script as module "openqa_scan" (the file is named `openqa-scan`)
 rootpath = pathlib.Path(__file__).parent.parent.resolve()
-loader = importlib.machinery.SourceFileLoader("openqa_scan", f"{rootpath}/openqa-scan")
+loader = importlib.machinery.SourceFileLoader("openqa_scan", f"{rootpath}/openqa_scan.py")
 spec = importlib.util.spec_from_loader(loader.name, loader)
 oqs = importlib.util.module_from_spec(spec)
 sys.modules[loader.name] = oqs
