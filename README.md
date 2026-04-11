@@ -1,11 +1,14 @@
 ![Build Status](https://github.com/ricardobranco777/bugme/actions/workflows/ci.yml/badge.svg)
 
-Add openqa_scan.py script for your openQA needs:
+Docker image available at `ghcr.io/ricardobranco777/openqa-scan:latest`
+
+openqa-scan is here for all your openQA needs:
 
 - Scan traces & coredumps.
 - List jobs.
 - Cancel, comment, delete, prioritize and restart jobs.
 - Accepts almost any kind of openQA URL that shows jobs.
+- Prays for your soul.
 
 NOTES
 - To avoid its usage as a weapon of mass deletion, the script limits itself to 99 jobs.
