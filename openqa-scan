@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DOCKER="${DOCKER:-podman}"
+IMAGE="${IMAGE:-ghcr.io/ricardobranco777/openqa-scan:latest}"
+
+volumes=()
+if [ -f ~/.netrc ] ; then
+	volumes+=(-v ~/.netrc:/root/.netrc:ro,z)
+fi
+
+exec "$DOCKER" run --rm -e DEBUG "${volumes[@]}" "$IMAGE" "$@"

@@ -594,8 +594,7 @@ def parse_args() -> argparse.Namespace:
 
     extracts = ["all", "coredumps", "traces"]
 
-    parser = argparse.ArgumentParser(epilog="""Setup your $HOME/.netrc like this:
-                    machine $OPENQA_HOST login $USER password $APIKEY:$APISECRET""")
+    parser = argparse.ArgumentParser()
     # These are route names
     parser.add_argument("-A", "--action", choices=["cancel", "delete", "restart"])
     parser.add_argument(

@@ -8,6 +8,8 @@ RUN	zypper addrepo https://download.opensuse.org/repositories/SUSE:/CA/openSUSE_
 
 COPY	openqa_scan.py /
 
+ENV	REQUESTS_CA_BUNDLE=/etc/ssl/ca-bundle.pem
+
 VOLUME	/root
 
 ENTRYPOINT ["/usr/bin/python3", "/openqa_scan.py"]
