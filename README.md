@@ -20,18 +20,18 @@ Example usage:
 
 ```
 # List Tumbleweed x86_64 jobs
-$ openqa_scan.py -b latest https://openqa.opensuse.org/group_overview/1
+$ openqa_scan -b latest https://openqa.opensuse.org/group_overview/1
 
 # Scan Tumbleweed x86_64 for coredumps & traces:
-$ openqa_scan.py -x all https://openqa.opensuse.org/group_overview/1
+$ openqa_scan -x all https://openqa.opensuse.org/group_overview/1
 
 # Scan SLE aggregates
-$ openqa_scan.py -x all -d sle -v 15-SP6 -v 15-SP7 -b yesterday https://openqa.suse.de
-$ openqa_scan.py -x all -d sle -v 15-SP4 -v 15-SP5 -b yesterday https://openqa.suse.de
+$ openqa_scan -x all -d sle -v 15-SP6 -v 15-SP7 -b yesterday https://openqa.suse.de
+$ openqa_scan -x all -d sle -v 15-SP4 -v 15-SP5 -b yesterday https://openqa.suse.de
 ```
 
 ```
-usage: openqa_scan.py [-h] [-A {cancel,delete,restart}] [-a {aarch64,i586,ppc64le,riscv64,s390x,x86_64}] [-b BUILD] [-c COMMENT] [-d DISTRI] [-f FLAVOR] [-g GROUPID] [-p PRIORITY]
+usage: openqa_scan [-h] [-A {cancel,delete,restart}] [-a {aarch64,i586,ppc64le,riscv64,s390x,x86_64}] [-b BUILD] [-c COMMENT] [-d DISTRI] [-f FLAVOR] [-g GROUPID] [-p PRIORITY]
                    [-r {aborted,complete,failed,incomplete,none,not_complete,not_ok,obsoleted,ok,parallel_failed,parallel_restarted,passed,skipped,softfailed,timeout_exceeded,user_cancelled,user_restarted}]
                    [-s {assigned,cancelled,done,execution,final,pre_execution,running,scheduled,setup,uploading}] [-v VERSION] [-V] [-x {all,coredumps,traces}]
                    url [url ...]
