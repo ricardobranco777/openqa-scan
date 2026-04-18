@@ -44,6 +44,13 @@ IGNORE_TRACES = (
     {"trace": "out_of_memory"},
 )
 
+# https://progress.opensuse.org/issues/186708
+# The bare investigative retry job is a full clone of the failed job and
+# should overwrite the original job if passed
+RETRY_PASSED = re.compile(
+    r"Investigate retry job \*.*?:investigate:retry\*: t#[0-9]+ passed."
+)
+
 TIMEOUT = 300
 
 session = requests.Session()
@@ -390,6 +397,7 @@ def print_job(job: Job, extract: set[str] | None = None, verbose: bool = False) 
     extract = extract or set()
     want_traces = "traces" in extract
     want_coredumps = "coredumps" in extract
+    retry_passed = "retrypassed" in extract
 
     coredumps = []
     if want_coredumps:
@@ -403,10 +411,12 @@ def print_job(job: Job, extract: set[str] | None = None, verbose: bool = False) 
             for log in job.info["ulogs"]
             if "core." in log and not log.endswith(".txt")
         ]
+    if retry_passed:
+        retry_passed = any(RETRY_PASSED.search(c["text"]) for c in job.comments)
 
     traces = get_traces(job) if want_traces else []
 
-    if extract and not coredumps and not traces:
+    if extract and not coredumps and not traces and not retry_passed:
         return
 
     arch = job.info["settings"]["ARCH"]
@@ -420,7 +430,8 @@ def print_job(job: Job, extract: set[str] | None = None, verbose: bool = False) 
         print("\tcore:", urljoin(f"{job.url}/", f"file/{coredump}"))
     if traces:
         print_traces(job, traces, verbose=verbose)
-    print_comments(job)
+    if verbose:
+        print_comments(job)
 
 
 def get_urls(args: argparse.Namespace) -> list[str]:
@@ -487,7 +498,8 @@ def main(args: argparse.Namespace) -> None:
     Fetch matching jobs and either print them or perform the requested action
     """
     logs: list[str] | None = ["serial0.txt"] if "traces" in args.extract else None
-    jobs = get_all_jobs(get_urls(args), logs=logs, comments=args.verbose)
+    fetch_comments = args.verbose or "retrypassed" in args.extract
+    jobs = get_all_jobs(get_urls(args), logs=logs, comments=fetch_comments)
     sort_keys = "build,distri,version,flavor,arch,test"
     sort = list(map(str.upper, sort_keys.split(",")))
     jobs.sort(key=lambda j: itemgetter(*sort)(j.info["settings"]))
@@ -501,6 +513,13 @@ def main(args: argparse.Namespace) -> None:
         if args.action == "cancel":
             jobs = [job for job in jobs if job.info["state"] != "cancelled"]
         elif args.action == "comments":
+            if "retrypassed" in args.extract:
+                jobs = [
+                    job
+                    for job in jobs
+                    if job.info["result"] == "failed"
+                    and any(RETRY_PASSED.search(c["text"]) for c in job.comments)
+                ]
             data = {"text": args.comment}
         elif args.action == "prio":
             jobs = [
@@ -592,7 +611,7 @@ def parse_args() -> argparse.Namespace:
     # Meta states
     states += ["execution", "final", "pre_execution"]
 
-    extracts = ["all", "coredumps", "traces"]
+    extracts = ["coredumps", "retrypassed", "traces"]
 
     parser = argparse.ArgumentParser()
     # These are route names
