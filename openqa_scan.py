@@ -156,16 +156,12 @@ def get_jobs(url: str, ids: list[str] | None = None) -> list[Job]:
     ids = ids or []
     urlx = urlparse(url)
     key = None
+    if not ids and urlx.path.removeprefix("/tests/").isdigit():
+        ids = [urlx.path.removeprefix("/tests/")]
     if ids:
         key = "jobs"
         query = "ids=" + ",".join(ids)
         api_url = f"{urlx.scheme}://{urlx.netloc}/api/v1/jobs?{query}"
-    elif (
-        urlx.path.startswith("/tests/") and urlx.path.removeprefix("/tests/").isdigit()
-    ):
-        key = "job"
-        job_id = os.path.basename(urlx.path)
-        api_url = f"{urlx.scheme}://{urlx.netloc}/api/v1/jobs/{job_id}"
     else:
         api_url = f"{urlx.scheme}://{urlx.netloc}/api/v1/jobs/overview?{urlx.query}"
     data = get_json(api_url, key=key)
