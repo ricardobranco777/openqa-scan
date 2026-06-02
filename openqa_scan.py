@@ -487,7 +487,7 @@ def main(args: argparse.Namespace) -> None:
     sort_keys = "build,distri,version,flavor,arch,test"
     sort = list(map(str.upper, sort_keys.split(",")))
     jobs.sort(key=lambda j: itemgetter(*sort)(j.info["settings"]))
-    if len(jobs) == 2000:
+    if len(jobs) == 1999:
         logging.warning("We may have truncated results due to tests_overview_max_jobs")
     if args.action is not None:
         data: dict | None = None
