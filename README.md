@@ -1,4 +1,4 @@
-![Build Status](https://github.com/ricardobranco777/bugme/actions/workflows/ci.yml/badge.svg)
+![Build Status](https://github.com/ricardobranco777/openqa-scan/actions/workflows/ci.yml/badge.svg)
 
 Docker image available at `ghcr.io/ricardobranco777/openqa-scan:latest`
 
