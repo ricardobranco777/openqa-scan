@@ -31,10 +31,12 @@ $ openqa_scan -x all -d sle -v 15-SP4 -v 15-SP5 -b yesterday https://openqa.suse
 ```
 
 ```
-usage: openqa_scan [-h] [-A {cancel,delete,restart}] [-a {aarch64,i586,ppc64le,riscv64,s390x,x86_64}] [-b BUILD] [-c COMMENT] [-d DISTRI] [-f FLAVOR] [-g GROUPID] [-p PRIORITY]
-                   [-r {aborted,complete,failed,incomplete,none,not_complete,not_ok,obsoleted,ok,parallel_failed,parallel_restarted,passed,skipped,softfailed,timeout_exceeded,user_cancelled,user_restarted}]
-                   [-s {assigned,cancelled,done,execution,final,pre_execution,running,scheduled,setup,uploading}] [-v VERSION] [-V] [-x {all,coredumps,traces}]
-                   url [url ...]
+usage: openqa_scan.py [-h] [-A {cancel,delete,restart}] [-a {aarch64,i586,ppc64le,riscv64,s390x,x86_64}] [-b BUILD] [-c COMMENT] [-d DISTRI] [-f FLAVOR] [-g GROUPID] [-p PRIORITY]
+                      [-r {aborted,complete,failed,incomplete,none,not_complete,not_ok,obsoleted,ok,parallel_failed,parallel_restarted,passed,skipped,softfailed,timeout_exceeded,user_cancelled,user_restarted}]
+                      [-R {aborted,complete,failed,incomplete,none,not_complete,not_ok,obsoleted,ok,parallel_failed,parallel_restarted,passed,skipped,softfailed,timeout_exceeded,user_cancelled,user_restarted}]
+                      [-s {assigned,cancelled,done,execution,final,pre_execution,running,scheduled,setup,uploading}]
+                      [-S {assigned,cancelled,done,execution,final,pre_execution,running,scheduled,setup,uploading}] [-v VERSION] [-V] [-x {all,coredumps,traces}]
+                      url [url ...]
 
 positional arguments:
   url                   openQA url
@@ -52,7 +54,9 @@ options:
   -p, --priority PRIORITY
                         set priority
   -r, --result {aborted,complete,failed,incomplete,none,not_complete,not_ok,obsoleted,ok,parallel_failed,parallel_restarted,passed,skipped,softfailed,timeout_exceeded,user_cancelled,user_restarted}
+  -R, --not-result {aborted,complete,failed,incomplete,none,not_complete,not_ok,obsoleted,ok,parallel_failed,parallel_restarted,passed,skipped,softfailed,timeout_exceeded,user_cancelled,user_restarted}
   -s, --state {assigned,cancelled,done,execution,final,pre_execution,running,scheduled,setup,uploading}
+  -S, --not-state {assigned,cancelled,done,execution,final,pre_execution,running,scheduled,setup,uploading}
   -v, --version VERSION
                         product version
   -V, --verbose         show comments and first line of traces

@@ -430,7 +430,9 @@ def get_urls(args: argparse.Namespace) -> list[str]:
         "flavor",
         "groupid",
         "result",
+        "result__not",
         "state",
+        "state__not",
         "version",
     }
 
@@ -612,7 +614,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-g", "--groupid", action="append", type=int)
     parser.add_argument("-p", "--priority", type=int, help="set priority")
     parser.add_argument("-r", "--result", action="append", choices=sorted(results))
+    parser.add_argument("-R", "--not-result", dest="result__not", action="append", choices=sorted(results))
     parser.add_argument("-s", "--state", action="append", choices=sorted(states))
+    parser.add_argument("-S", "--not-state", dest="state__not", action="append", choices=sorted(states))
     parser.add_argument("-v", "--version", action="append", help="product version")
     parser.add_argument(
         "-V",

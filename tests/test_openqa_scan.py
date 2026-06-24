@@ -391,7 +391,9 @@ class TestGetUrls:
             "flavor": None,
             "groupid": None,
             "result": None,
+            "result__not": None,
             "state": None,
+            "state__not": None,
             "version": None,
         }
         base.update(kwargs)
@@ -467,6 +469,22 @@ class TestGetUrls:
             urls = oqs.get_urls(args)
         mock_lb.assert_called_once()
         assert "build=20240201" in urls[0]
+
+    def test_result__not_appended_to_query(self) -> None:
+        args = self._args(
+            "https://openqa.opensuse.org/tests/overview",
+            result__not=["passed"],
+        )
+        urls = oqs.get_urls(args)
+        assert "result__not=passed" in urls[0]
+
+    def test_state__not_appended_to_query(self) -> None:
+        args = self._args(
+            "https://openqa.opensuse.org/tests/overview",
+            state__not=["cancelled"],
+        )
+        urls = oqs.get_urls(args)
+        assert "state__not=cancelled" in urls[0]
 
 
 # ===========================================================================
