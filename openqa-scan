@@ -27,4 +27,9 @@ if [ -z "$RUNTIME" ]; then
 	fi
 fi
 
-exec "$SUDO" "$RUNTIME" run --rm --security-opt no-new-privileges -e DEBUG "${volumes[@]}" "$IMAGE" "$@"
+# Do not use sudo if we're in docker group
+if [[ $RUNTIME =~ docker ]] && id -Gn | grep -qw docker; then
+	SUDO=
+fi
+
+exec $SUDO "$RUNTIME" run --rm --security-opt no-new-privileges -e DEBUG "${volumes[@]}" "$IMAGE" "$@"
