@@ -32,4 +32,17 @@ if [[ $RUNTIME =~ docker ]] && id -Gn | grep -qw docker; then
 	SUDO=
 fi
 
-exec $SUDO "$RUNTIME" run --rm --security-opt no-new-privileges -e DEBUG "${volumes[@]}" "$IMAGE" "$@"
+opts=(
+	--cap-drop=ALL
+	--net=host
+	--read-only
+	--rm
+	--security-opt=no-new-privileges
+	--user "$(id -u):$(id -g)"
+)
+
+if [ -n "$SUDO" ]; then
+	SUDO="$SUDO --preserve-env=DEBUG"
+fi
+
+exec $SUDO "$RUNTIME" run "${opts[@]}" -e DEBUG "${volumes[@]}" "$IMAGE" "$@"
