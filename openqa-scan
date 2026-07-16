@@ -4,7 +4,7 @@ IMAGE="${IMAGE:-ghcr.io/ricardobranco777/openqa-scan:latest}"
 
 volumes=()
 if [ -f ~/.netrc ] ; then
-	volumes+=(-v "$HOME/.netrc:/root/.netrc:ro,z")
+	volumes+=(-v "$HOME/.netrc:$HOME/.netrc:ro,z")
 fi
 
 DOCKER=$(command -v docker)
