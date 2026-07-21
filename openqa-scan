@@ -17,29 +17,24 @@ else
 	SUDO=${SUDO:-$(command -v sudo)}
 fi
 
-# Use Docker if unprivileged user namespaces are disabled and
-# the socket exists, otherwise use podman if available
-if [ -z "$RUNTIME" ]; then
-	if [ -n "$SUDO" ] && [ -S /var/run/docker.sock ]; then
-		RUNTIME=$DOCKER
-	else
-		RUNTIME=${PODMAN:-$DOCKER}
-	fi
-fi
-
-# Do not use sudo if we're in docker group
-if [[ $RUNTIME =~ docker ]] && id -Gn | grep -qw docker; then
-	SUDO=
-fi
+# Prefer Podman over Docker since it's daemonless and we're holy
+RUNTIME="${RUNTIME:-${PODMAN:-$DOCKER}}"
 
 opts=(
 	--cap-drop=ALL
-	--net=host
 	--read-only
 	--rm
 	--security-opt=no-new-privileges
 	--user "$(id -u):$(id -g)"
 )
+
+# Do not use sudo if we're in docker group
+if [[ $RUNTIME =~ docker ]]; then
+	if id -Gn | grep -qw docker; then
+		SUDO=
+	fi
+	opts+=(--net=host)
+fi
 
 if [ -n "$SUDO" ]; then
 	SUDO="$SUDO --preserve-env=DEBUG"
